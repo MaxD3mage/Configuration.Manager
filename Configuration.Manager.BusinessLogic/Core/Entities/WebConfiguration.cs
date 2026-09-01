@@ -3,7 +3,7 @@
 /// <summary>
 /// Конфигурация
 /// </summary>
-public class Configuration
+public class WebConfiguration
 {
     /// <summary>
     /// Идентификатор категории
@@ -38,5 +38,5 @@ public class Configuration
     /// <summary>
     /// Список всех версий конфигурации
     /// </summary>
-    public List<ConfigurationVersion> Versions { get; set; } = new();
+    public List<WebConfigurationVersion> Versions { get; set; } = new();
 }

@@ -3,7 +3,7 @@
 /// <summary>
 /// Версия конфигурации
 /// </summary>
-public class ConfigurationVersion
+public class WebConfigurationVersion
 {
     /// <summary>
     /// Идентификатор версии
@@ -23,7 +23,7 @@ public class ConfigurationVersion
     /// <summary>
     /// Настройки версии конфигурации json
     /// </summary> 
-    public string SettingsJson { get; set; }
+    public string SettingsJson { get; set; } = "{}";
     
     /// <summary>
     /// Дата создания версии конфигурации
