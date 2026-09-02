@@ -1,0 +1,37 @@
+﻿version: '3.8'
+
+services:
+  db.postgres:
+    image: postgres:16
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5434:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}" ]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+
+  configuration.manager.web:
+    image: configuration.manager.web
+    build:
+      context: .
+      dockerfile: Configuration.Manager.Web/Dockerfile
+    ports:
+      - "5000:8080"
+    depends_on:
+      db.postgres:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Host=db.postgres;Port=5432;Database=${DB_NAME};Username=${DB_USER};Password=${DB_PASSWORD}
+volumes:
+  pgdata:
+    
