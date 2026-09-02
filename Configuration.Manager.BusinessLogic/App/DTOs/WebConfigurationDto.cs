@@ -1,4 +1,6 @@
-﻿namespace Configuration.Manager.BusinessLogic.App.DTOs;
+﻿using System.Text.Json;
+
+namespace Configuration.Manager.BusinessLogic.App.DTOs;
 
 public class WebConfigurationDto
 {
@@ -7,5 +9,5 @@ public class WebConfigurationDto
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
     public int CurrentVersionNumber { get; set; }
-    public string SettingsJson { get; set; } = "{}";
+    public JsonElement SettingsJson { get; set; }
 }

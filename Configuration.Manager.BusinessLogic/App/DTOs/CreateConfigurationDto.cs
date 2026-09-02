@@ -1,8 +1,10 @@
-﻿namespace Configuration.Manager.BusinessLogic.App.DTOs;
+﻿using System.Text.Json;
+
+namespace Configuration.Manager.BusinessLogic.App.DTOs;
 
 public class CreateConfigurationDto
 {
     public string Name { get; set; } = string.Empty;
-    public string SettingsJson { get; set; } = "{}";
+    public JsonElement SettingsJson { get; set; }
     public string? Comment { get; set; }
 }

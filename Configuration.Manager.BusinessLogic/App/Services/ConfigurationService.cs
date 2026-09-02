@@ -32,7 +32,7 @@ public class ConfigurationService(IConfigurationRepository repository, INotifica
             Id = Guid.NewGuid(),
             ConfigurationId = config.Id,
             VersionNumber = 1,
-            SettingsJson = dto.SettingsJson,
+            SettingsJson = dto.SettingsJson.GetRawText(),
             CreatedAt = DateTime.UtcNow,
             Comment = dto.Comment
         };
@@ -68,7 +68,7 @@ public class ConfigurationService(IConfigurationRepository repository, INotifica
             Id = Guid.NewGuid(),
             ConfigurationId = config.Id,
             VersionNumber = maxVersion + 1,
-            SettingsJson = dto.SettingsJson,
+            SettingsJson = dto.SettingsJson.GetRawText(),
             CreatedAt = DateTime.UtcNow,
             Comment = dto.Comment
         };
@@ -121,6 +121,8 @@ public class ConfigurationService(IConfigurationRepository repository, INotifica
 
     private static WebConfigurationDto MapToDto(WebConfiguration config, WebConfigurationVersion version)
     {
+        var settingsJsonElement = JsonDocument.Parse(version.SettingsJson).RootElement;
+        
         return new WebConfigurationDto
         {
             Id = config.Id,
@@ -128,22 +130,10 @@ public class ConfigurationService(IConfigurationRepository repository, INotifica
             CreatedAt = config.CreatedAt,
             UpdatedAt = config.UpdatedAt,
             CurrentVersionNumber = version.VersionNumber,
-            SettingsJson = version.SettingsJson
+            SettingsJson = settingsJsonElement
         };
     }
     
-    private static bool IsValidJson(string json)
-    {
-        try
-        {
-            JsonDocument.Parse(json);
-            return true;
-        }
-        catch
-        {
-            return false;
-        }
-    }
 
     private static void ValidateCreateDto(CreateConfigurationDto dto)
     {
@@ -151,10 +141,8 @@ public class ConfigurationService(IConfigurationRepository repository, INotifica
             throw new ValidationException("Name is required");
         if (dto.Name.Length > 100)
             throw new ValidationException("Name cannot exceed 100 characters");
-        if (string.IsNullOrWhiteSpace(dto.SettingsJson))
+        if (dto.SettingsJson.ValueKind is JsonValueKind.Null or JsonValueKind.Undefined)
             throw new ValidationException("SettingsJson is required");
-        if (!IsValidJson(dto.SettingsJson))
-            throw new ValidationException("Invalid JSON format");
     }
     
     private static void ValidateUpdateDto(UpdateConfigurationDto dto)
@@ -163,10 +151,8 @@ public class ConfigurationService(IConfigurationRepository repository, INotifica
             throw new ValidationException("Name is required");
         if (dto.Name.Length > 100)
             throw new ValidationException("Name cannot exceed 100 characters");
-        if (string.IsNullOrWhiteSpace(dto.SettingsJson))
+        if (dto.SettingsJson.ValueKind is JsonValueKind.Null or JsonValueKind.Undefined)
             throw new ValidationException("SettingsJson is required");
-        if (!IsValidJson(dto.SettingsJson))
-            throw new ValidationException("Invalid JSON format");
     }
 }
 
