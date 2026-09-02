@@ -1,4 +1,3 @@
-
 # Visual Studio Code
 .vscode
 
@@ -29,3 +28,6 @@ msbuild.wrn
 # JetBrains Rider
 .idea/
 *.sln.iml
+
+*.env
+Configuration.Manager.Web/appsettings.json
