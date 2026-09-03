@@ -73,7 +73,7 @@ public class ConfigurationService(IConfigurationRepository repository, INotifica
             Comment = dto.Comment
         };
 
-        config.Versions.Add(newVersion);
+        repository.AddVersion(newVersion);
         config.CurrentVersionId = newVersion.Id;
         config.Name = dto.Name;
         config.UpdatedAt = DateTime.UtcNow;

@@ -18,6 +18,10 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
                 .WithOne()
                 .HasForeignKey(v => v.ConfigurationId)
                 .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne<WebConfigurationVersion>()
+                .WithMany()
+                .HasForeignKey(c => c.CurrentVersionId)
+                .OnDelete(DeleteBehavior.Restrict);
         });
         
         modelBuilder.Entity<WebConfigurationVersion>(entity =>

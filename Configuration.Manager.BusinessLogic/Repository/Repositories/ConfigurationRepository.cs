@@ -44,6 +44,11 @@ public class ConfigurationRepository(AppDbContext context) : IConfigurationRepos
     {
         context.Configurations.Add(configuration);
     }
+    
+    public void AddVersion(WebConfigurationVersion version)
+    {
+        context.ConfigurationVersions.Add(version);
+    }
 
     public async Task SaveChangesAsync()
     {
