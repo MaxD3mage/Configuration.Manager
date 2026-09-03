@@ -143,6 +143,8 @@ public class ConfigurationService(IConfigurationRepository repository, INotifica
             throw new ValidationException("Name cannot exceed 100 characters");
         if (dto.SettingsJson.ValueKind is JsonValueKind.Null or JsonValueKind.Undefined)
             throw new ValidationException("SettingsJson is required");
+        if (dto.SettingsJson.ValueKind != JsonValueKind.Object)
+            throw new ValidationException("SettingsJson must be a JSON object");
     }
     
     private static void ValidateUpdateDto(UpdateConfigurationDto dto)
@@ -153,6 +155,8 @@ public class ConfigurationService(IConfigurationRepository repository, INotifica
             throw new ValidationException("Name cannot exceed 100 characters");
         if (dto.SettingsJson.ValueKind is JsonValueKind.Null or JsonValueKind.Undefined)
             throw new ValidationException("SettingsJson is required");
+        if (dto.SettingsJson.ValueKind != JsonValueKind.Object)
+            throw new ValidationException("SettingsJson must be a JSON object");
     }
 }
 

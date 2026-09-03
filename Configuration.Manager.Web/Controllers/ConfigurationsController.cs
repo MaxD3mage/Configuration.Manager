@@ -5,7 +5,7 @@ namespace Configuration.Manager.Web.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ConfigurationsController(ConfigurationService service) : ControllerBase
+public class ConfigurationsController(IConfigurationService service) : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> Get([FromQuery] string userId,
